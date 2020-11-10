@@ -267,26 +267,26 @@ def start():
             opt.epoch = 150
 
         if opt.stage == 1:
-            main.load_model(opt.save_path + '/isgan_stage0_150.pt', 0)
+            main.load_model(opt.save_path + '/isgan_stage0_latest.pt', 0)
             opt.start = 0
             opt.epoch = 300
 
         if opt.stage == 2:
-            main.load_model(opt.save_path + '/isgan_stage1_300.pt', 0)
+            main.load_model(opt.save_path + '/isgan_stage1_latest.pt', 0)
             opt.start = 0
             opt.epoch = 200
 
         # ours stage3
         # 注意开始epoch标注的是300 为了适应lr降低 具体开始epoch视stage1 load的epoch而定
         if opt.stage == 3:
-            main.load_model(opt.save_path + '/isgan_stage2_200.pt', 300)
+            main.load_model(opt.save_path + '/isgan_stage2_latest.pt', 300)
             opt.start = 300
             opt.epoch = 400
 
         # 不用GAN的stage3
         # 注意开始epoch标注的是300 为了适应lr降低 具体开始epoch视stage1 load的epoch而定
         if opt.stage == 4:
-            main.load_model(opt.save_path + '/isgan_stage0_150.pt', 300)
+            main.load_model(opt.save_path + '/isgan_stage0_latest.pt', 300)
             opt.start = 300
             opt.epoch = 400
 
@@ -456,16 +456,22 @@ def start():
             if opt.stage == 0 and epoch % 50 == 0:
                 os.makedirs(opt.save_path, exist_ok=True)
                 weight_save_path = opt.save_path + opt.name + \
-                                   '_stage{}_{:03d}.pt'.format(opt.stage, epoch)
+                                   '_stage{}_latest.pt'.format(opt.stage)
+                if os.path.exists(weight_save_path):
+                    os.remove(weight_save_path)
                 main.save_model(weight_save_path)
                 main.evaluate(opt.save_path + opt.name + '_accr.txt', epoch)
             elif opt.stage == 1 or opt.stage == 2 and epoch % 100 == 0:
                 weight_save_path = opt.save_path + opt.name + \
-                                   '_stage{}_{:03d}.pt'.format(opt.stage, epoch)
+                                   '_stage{}_latest.pt'.format(opt.stage)
+                if os.path.exists(weight_save_path):
+                    os.remove(weight_save_path)
                 main.save_model(weight_save_path)
             elif opt.stage == 3 and epoch % 25 == 0:
                 weight_save_path = opt.save_path + opt.name + \
-                                   '_stage{}_{:03d}.pt'.format(opt.stage, epoch)
+                                   '_stage{}_latest.pt'.format(opt.stage)
+                if os.path.exists(weight_save_path):
+                    os.remove(weight_save_path)
                 main.save_model(weight_save_path)
                 main.evaluate(opt.save_path + opt.name + '_accr.txt', epoch)
 
@@ -486,4 +492,5 @@ if __name__ == '__main__':
     start()
     opt.stage = 3
     start()
-
+    opt.stage = 4
+    start()

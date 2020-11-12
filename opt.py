@@ -4,7 +4,7 @@ import argparse
 parser = argparse.ArgumentParser(description='reid')
 
 parser.add_argument('--data_path',
-                    default="E:\\百步梯E盘分部\\数据集\\dataset5",
+                    default="/home/ubuntu/reid/0630/dataset/prcc-shuffle/dataset5/",
                     help='path of Market-1501-v15.09.15')
 
 parser.add_argument('--mode',

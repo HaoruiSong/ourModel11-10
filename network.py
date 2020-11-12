@@ -500,7 +500,7 @@ class ft_net(nn.Module):
 
     def __init__(self):
         super(ft_net, self).__init__()
-        model_ft = resnet50(pretrained=True)
+        model_ft = resnet18(pretrained=True)
         # avg pooling to global pooling
         model_ft.avgpool = nn.AdaptiveAvgPool2d((1,1))
         self.backbone = nn.Sequential(model_ft.conv1, model_ft.bn1, model_ft.relu, model_ft.maxpool)

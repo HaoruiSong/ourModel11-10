@@ -86,11 +86,11 @@ class prcc(dataset.Dataset):
         self.dtype = dtype
 
         if self.dtype == 'train':
-            self.data_path += '\\bounding_box_train'
+            self.data_path += '/bounding_box_train'
         elif self.dtype == 'test':
-            self.data_path += '\\bounding_box_test'
+            self.data_path += '/bounding_box_test'
         else:
-            self.data_path += '\\query'
+            self.data_path += '/query'
 
         self.imgs = [path for path in self.list_pictures(self.data_path) if self.id(path) != -1]
 
@@ -121,10 +121,10 @@ class prcc(dataset.Dataset):
         :param file_path: unix style file path
         :return: person id
         """
-        return int(file_path.split('\\')[-1].split('_')[0])
+        return int(file_path.split('/')[-1].split('_')[0])
 
     def cloth(self, file_path):
-        c = int(file_path.split("\\")[-1].split('_')[1][1])
+        c = int(file_path.split("/")[-1].split('_')[1][1])
         if c == 0 or c == 1:
             return self._id2label[self.id(file_path)] * 2
         elif c == 2:
@@ -136,7 +136,7 @@ class prcc(dataset.Dataset):
         :param file_path: unix style file path
         :return: camera id
         """
-        return int(file_path.split('\\')[-1].split('_')[1][1])
+        return int(file_path.split('/')[-1].split('_')[1][1])
 
     @property
     def ids(self):
@@ -183,11 +183,11 @@ class ltcc(dataset.Dataset):
         self.dtype = dtype
 
         if self.dtype == 'train':
-            self.data_path += '\\bounding_box_train'
+            self.data_path += '/bounding_box_train'
         elif self.dtype == 'test':
-            self.data_path += '\\bounding_box_test'
+            self.data_path += '/bounding_box_test'
         else:
-            self.data_path += '\\query'
+            self.data_path += '/query'
 
         self.imgs = [path for path in self.list_pictures(self.data_path) if self.id(path) != -1]
 
@@ -216,7 +216,7 @@ class ltcc(dataset.Dataset):
 
     @staticmethod
     def cloth(file_path):
-        return int(file_path.split('\\')[-1].split('_')[1].split('s')[-1])
+        return int(file_path.split('/')[-1].split('_')[1].split('s')[-1])
 
     @staticmethod
     def id(file_path):
@@ -224,7 +224,7 @@ class ltcc(dataset.Dataset):
         :param file_path: unix style file path
         :return: person id
         """
-        return int(file_path.split('\\')[-1].split('_')[0])
+        return int(file_path.split('/')[-1].split('_')[0])
 
     @staticmethod
     def camera(file_path):
@@ -232,7 +232,7 @@ class ltcc(dataset.Dataset):
         :param file_path: unix style file path
         :return: camera id
         """
-        return int(file_path.split('\\')[-1].split('_')[1].split('s')[0][1:])
+        return int(file_path.split('/')[-1].split('_')[1].split('s')[0][1:])
 
     @property
     def ids(self):

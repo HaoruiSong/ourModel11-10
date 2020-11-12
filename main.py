@@ -483,13 +483,13 @@ def start():
 
 if __name__ == '__main__':
     opt.mode = 'train'
-    opt.stage = 0
-    start()
-    opt.stage = 1
-    start()
+    # opt.stage = 0
+    # start()
+    # opt.stage = 1
+    # start()
     opt.batchimage = 2
-    opt.stage = 2
-    start()
+    # opt.stage = 2
+    # start()
     opt.stage = 3
     start()
     opt.stage = 4

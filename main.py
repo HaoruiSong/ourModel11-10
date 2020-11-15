@@ -330,19 +330,19 @@ def start():
                 Cloth_Error.savefig("./weights/Stage1_ClothError.jpg")
                 plt.close()
 
-                D_I_fig = plt.figure()
-                plt.ylabel("D_I")
-                plt.xlim(0, 300)
-                plt.plot(main.x, main.y[1])
-                D_I_fig.savefig("./weights/Stage1_D_I_loss.jpg")
-                plt.close()
-
-                D_C_fig = plt.figure()
-                plt.ylabel("D_C")
-                plt.xlim(0, 300)
-                plt.plot(main.x, main.y[2])
-                D_C_fig.savefig("./weights/Stage1_D_C_loss.jpg")
-                plt.close()
+                # D_I_fig = plt.figure()
+                # plt.ylabel("D_I")
+                # plt.xlim(0, 300)
+                # plt.plot(main.x, main.y[1])
+                # D_I_fig.savefig("./weights/Stage1_D_I_loss.jpg")
+                # plt.close()
+                #
+                # D_C_fig = plt.figure()
+                # plt.ylabel("D_C")
+                # plt.xlim(0, 300)
+                # plt.plot(main.x, main.y[2])
+                # D_C_fig.savefig("./weights/Stage1_D_C_loss.jpg")
+                # plt.close()
 
             if opt.stage == 2:
 
@@ -366,6 +366,21 @@ def start():
                 plt.xlim(0, 200)
                 KL_Loss_fig.savefig("./weights/Stage2_KL_Loss.jpg")
                 plt.close()
+
+                D_I_fig = plt.figure()
+                plt.ylabel("D_I")
+                plt.xlim(0, 300)
+                plt.plot(main.x, main.y[3])
+                D_I_fig.savefig("./weights/Stage2_D_I_loss.jpg")
+                plt.close()
+
+                D_C_fig = plt.figure()
+                plt.ylabel("D_C")
+                plt.xlim(0, 300)
+                plt.plot(main.x, main.y[4])
+                D_C_fig.savefig("./weights/Stage2_D_C_loss.jpg")
+                plt.close()
+
 
             if opt.stage == 3:
 

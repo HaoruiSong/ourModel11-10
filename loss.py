@@ -97,7 +97,7 @@ class Loss(loss._Loss):
                 self.set_parameter(cloth_dict2[i], train=True)
             self.set_parameter(self.model.G, train=False)
             self.set_parameter(self.model.D, train=False)
-            self.set_parameter(self.model.DC, train=True)
+            self.set_parameter(self.model.DC, train=False)
 
         elif opt.stage == 2:
             self.set_parameter(self.model.C, train=False)
@@ -115,7 +115,7 @@ class Loss(loss._Loss):
                 # self.set_parameter(cloth_dict2[i], train=True)
             self.set_parameter(self.model.G, train=True)
             self.set_parameter(self.model.D, train=True)
-            self.set_parameter(self.model.DC, train=False)
+            self.set_parameter(self.model.DC, train=True)
 
 
 
@@ -281,7 +281,7 @@ class Loss(loss._Loss):
             return loss_sum, [Rgb_CE.data.cpu().numpy()], [[IDcnt, IDtotal], [1, 1]]
 
         elif opt.stage == 1:
-            D_outputs_id, D_outputs_cloth = self.model.DC(rgb)
+            # D_outputs_id, D_outputs_cloth = self.model.DC(rgb)
 
             Cloth_CE = self.cloth_related_loss(cloth_labels, rgb_outputs)
             Clothcnt = 0
@@ -293,34 +293,41 @@ class Loss(loss._Loss):
                     if class_ == cloth_label:
                         Clothcnt += 1
 
+            # D_I = self.cross_entropy_loss(D_outputs_id, labels)
+            # D_C = self.cross_entropy_loss(D_outputs_cloth, cloth_labels)
+            # DC_loss = D_I + D_C
+            # DC_loss.backward()
+            # self.optimizer_DC.step()
+            loss_sum = Cloth_CE
+
+            print('\rCloth_CE:%.2f' % (
+                Cloth_CE.data.cpu().numpy()
+                ), end=' ')
+            return loss_sum, \
+                   [Cloth_CE.data.cpu().numpy()], \
+                   [[1, 1], [Clothcnt, Clothtotal]]
+
+        elif opt.stage == 2:
+            D_outputs_id, D_outputs_cloth = self.model.DC(rgb)
             D_I = self.cross_entropy_loss(D_outputs_id, labels)
             D_C = self.cross_entropy_loss(D_outputs_cloth, cloth_labels)
             DC_loss = D_I + D_C
             DC_loss.backward()
             self.optimizer_DC.step()
-            loss_sum = Cloth_CE
 
-            print('\rCloth_CE:%.2f D_I:%.2f D_C:%.2f' % (
-                Cloth_CE.data.cpu().numpy(),
-                D_I.data.cpu().numpy(),
-                D_C.data.cpu().numpy()
-                ), end=' ')
-            return loss_sum, \
-                   [Cloth_CE.data.cpu().numpy(), D_I.data.cpu().numpy(), D_C.data.cpu().numpy()], \
-                   [[1, 1], [Clothcnt, Clothtotal]]
-
-        elif opt.stage == 2:
             D_loss, G_loss = self.GAN_loss(rgb, rgb_outputs, labels, cloth_labels, epoch)
             KL_loss = self.KL_loss(rgb_outputs)
 
             loss_sum = G_loss + KL_loss / 500
 
-            print('\rD_loss:%.2f  G_loss:%.2f KL:%.2f' % (
+            print('\rD_loss:%.2f  G_loss:%.2f KL:%.2f D_I:%.2f D_C:%.2f' % (
                 D_loss.data.cpu().numpy(),
                 G_loss.data.cpu().numpy(),
-                KL_loss.data.cpu().numpy()), end=' ')
+                KL_loss.data.cpu().numpy(),
+                D_I.data.cpu().numpy(),
+                D_C.data.cpu().numpy()), end=' ')
             return loss_sum, \
-                   [D_loss.data.cpu().numpy(), G_loss.data.cpu().numpy(), KL_loss.data.cpu().numpy()], \
+                   [D_loss.data.cpu().numpy(), G_loss.data.cpu().numpy(), KL_loss.data.cpu().numpy(), D_I.data.cpu().numpy(), D_C.data.cpu().numpy()], \
                    [[1, 1], [1, 1]]
 
         elif opt.stage == 3:

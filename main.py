@@ -467,7 +467,7 @@ def start():
                 if os.path.exists(weight_save_path):
                     os.remove(weight_save_path)
                 main.save_model(weight_save_path)
-            elif opt.stage == 3 and epoch % 25 == 0:
+            elif (opt.stage == 3 or opt.stage == 4) and epoch % 25 == 0:
                 weight_save_path = opt.save_path + opt.name + \
                                    '_stage{}_latest.pt'.format(opt.stage)
                 if os.path.exists(weight_save_path):
@@ -483,14 +483,14 @@ def start():
 
 if __name__ == '__main__':
     opt.mode = 'train'
-    # opt.stage = 0
-    # start()
+    opt.stage = 0
+    start()
     # opt.stage = 1
     # start()
-    opt.batchimage = 2
+    # opt.batchimage = 2
     # opt.stage = 2
     # start()
-    opt.stage = 3
-    start()
+    # opt.stage = 3
+    # start()
     opt.stage = 4
     start()
